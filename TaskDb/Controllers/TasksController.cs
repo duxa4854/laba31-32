@@ -157,7 +157,6 @@ public async Task<ActionResult> GetPaged(
         Items = tasks
     });
 }
-// GET /api/tasks/overdue
 [HttpGet("overdue")]
 public async Task<ActionResult<IEnumerable<TaskItem>>> GetOverdue() {
     var now = DateTime.UtcNow;
@@ -168,5 +167,23 @@ public async Task<ActionResult<IEnumerable<TaskItem>>> GetOverdue() {
         .OrderBy(t => t.DueDate)
         .ToListAsync();
     return Ok(overdue);
+}
+[HttpPatch("complete-all")]
+public async Task<ActionResult> CompleteAll() {
+    var count = await _db.Tasks
+        .Where(t => !t.IsCompleted)
+        .ExecuteUpdateAsync(s => 
+            s.SetProperty(t => t.IsCompleted, true));
+    
+    return Ok(new { Updated = count });
+}
+
+[HttpDelete("completed")]
+public async Task<ActionResult> DeleteCompleted() {
+    var count = await _db.Tasks
+        .Where(t => t.IsCompleted)
+        .ExecuteDeleteAsync();
+    
+    return Ok(new { Deleted = count });
 }
 }
