@@ -5,9 +5,10 @@ namespace TaskDb.Data;
 
 public class AppDbContext : DbContext 
 {
-    // Исправлено: DbContextOptions вместо DbContextOption
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-    
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {
+        
+    }
+    public AppDbContext() { }
     public DbSet<TaskItem> Tasks { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) 
@@ -18,7 +19,7 @@ public class AppDbContext : DbContext
             new TaskItem {
                 Id = 1,
                 Title = "Изучить ASP.NET Core",
-                Description = "Контроллеры, маршруты, middleware", // Исправлено: "муршруты" → "маршруты"
+                Description = "Контроллеры, маршруты, middleware",
                 Priority = "High",
                 IsCompleted = true,
                 CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc)
@@ -40,5 +41,5 @@ public class AppDbContext : DbContext
                 CreatedAt = new DateTime(2026, 1, 3, 0, 0, 0, DateTimeKind.Utc)
             }
         ); 
-    }
-}
+    } 
+} 
